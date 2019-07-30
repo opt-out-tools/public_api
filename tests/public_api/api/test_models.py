@@ -1,5 +1,5 @@
 # pylint: disable=invalid-name, unused-argument
-from opt_out.public_api.api.models import Submission, SubmissionForm
+from opt_out.public_api.api.models import Submission, SubmissionForm, FurtherDetailsForm
 
 from opt_out.public_api.api.enums import Identify
 from opt_out.public_api.api.models import FurtherDetails
@@ -79,3 +79,8 @@ def test_save_identify(db):
     assert details[0].identify == "Identify.female"
     assert details[1].identify == "Identify.transgender"
 
+def test_submission_form_validation(submit_details_request):
+    submit_details_request['identify'] = Identify.female.value
+    details = FurtherDetailsForm(submit_details_request)
+
+    assert not details.errors

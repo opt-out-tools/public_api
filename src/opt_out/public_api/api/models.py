@@ -29,8 +29,28 @@ class SubmissionForm(ModelForm):
 
         return clean_url
 
+    def clean_self_submission(self):
+        if "self_submission" not in self.data:
+            raise ValidationError("missing self submission flag")
+
+        clean_self_submission = self.data["self_submission"]
+        if type(clean_self_submission) != bool:
+            raise ValidationError("self submission flag must be a boolean value")
+
+        return clean_self_submission
+
+    def clean_is_part_of_larger_attack(self):
+        if "is_part_of_larger_attack" not in self.data:
+            raise ValidationError("missing is part of larger attack flag")
+
+        clean_is_part_of_larger_attack = self.data["is_part_of_larger_attack"]
+        if type(clean_is_part_of_larger_attack) != bool:
+            raise ValidationError("is part of larger attack flag must be a boolean value")
+
+        return clean_is_part_of_larger_attack
+
 class FurtherDetails(models.Model):
-    identify = models.CharField(max_length=40, choices=[(tag, tag.value) for tag in Identify])
+    identify = models.CharField(max_length=40, choices=[(tag.value, tag) for tag in Identify])
 
 class FurtherDetailsForm(ModelForm):
     class Meta:
@@ -39,8 +59,11 @@ class FurtherDetailsForm(ModelForm):
 
     def clean_identify(self):
         clean_identify = self.cleaned_data["identify"]
+
         if type(clean_identify) != str:
             raise ValidationError("identify must be string")
 
         if clean_identify is None:
             raise ValidationError("identify cannot be empty")
+
+        return clean_identify
