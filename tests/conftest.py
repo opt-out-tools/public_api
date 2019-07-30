@@ -12,6 +12,14 @@ import pytest
 
 @pytest.fixture
 def submit_urls_request():
-    yield {"urls": ["https://twitter.com/i=1"],
-           "self_submission": True,
-           "is_part_of_larger_attack": True}
+    yield {
+        "urls": ["https://twitter.com/i=1"],
+        "self_submission": True,
+        "is_part_of_larger_attack": True,
+    }
+
+@pytest.fixture
+def submit_details_request():
+    yield {
+        "identify": "female"
+    }

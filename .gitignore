@@ -55,3 +55,4 @@ src/opt_out/public_api/website/settings.py
 local/
 install/
 tests/.hypothesis/
+.mypy_cache/
