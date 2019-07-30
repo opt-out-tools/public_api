@@ -1,0 +1,29 @@
+repos:
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: black
+        language_version: python3.7
+        language: system
+        types: [python]
+      - id: flake8
+        name: flake8
+        entry: flake8
+        language: system
+        types: [python]
+      - id: pylint
+        name: pylint
+        entry: pylint  --rcfile=".pylintrc"
+        language: system
+        types: [python]
+      - id: mypy
+        name: mypy
+        entry: mypy
+        language: system
+        types: [python]
+      - id: pycodestyle
+        name: pycodestyle
+        entry: pycodestyle --max-line-length=90
+        language: system
+        types: [python]
