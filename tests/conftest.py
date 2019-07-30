@@ -13,7 +13,7 @@ import pytest
 @pytest.fixture
 def submit_urls_request():
     yield {
-        "urls": ["https://twitter.com/i=1"],
+        "urls": ["https://twitter.com/i=1", "https://twitter.com/i=2"],
         "self_submission": True,
         "is_part_of_larger_attack": True,
     }

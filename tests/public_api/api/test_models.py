@@ -1,5 +1,5 @@
 # pylint: disable=invalid-name, unused-argument
-from opt_out.public_api.api.models import Submission
+from opt_out.public_api.api.models import Submission, SubmissionForm
 
 from opt_out.public_api.api.enums import Identify
 from opt_out.public_api.api.models import FurtherDetails
@@ -38,6 +38,11 @@ def test_save_urls(db):
     assert submissions[0].urls == ["https://twitter.com/i=1"]
     assert submissions[1].urls == ["https://twitter.com/i=2"]
 
+def test_submission_form_validation(submit_urls_request):
+    submit_urls_request['urls'] = ['https://twitter.com/i=1', 'https://twitter.com/i=1']
+    submissions = SubmissionForm(submit_urls_request)
+
+    assert not submissions.errors
 
 def test_save_self_submission(db):
     first, second = create_submission()
@@ -73,3 +78,4 @@ def test_save_identify(db):
 
     assert details[0].identify == "Identify.female"
     assert details[1].identify == "Identify.transgender"
+

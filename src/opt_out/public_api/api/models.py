@@ -19,13 +19,15 @@ class SubmissionForm(ModelForm):
         fields = ["urls", "self_submission", "is_part_of_larger_attack"]
 
     def clean_urls(self):
-        clean_url = self.cleaned_data["urls"]
+        clean_url = self.data["urls"]
         if type(clean_url) != list:
             raise ValidationError("urls must be list")
 
         url_validator = URLValidator()
         for url in clean_url:
             url_validator(url)
+
+        return clean_url
 
 class FurtherDetails(models.Model):
     identify = models.CharField(max_length=40, choices=[(tag, tag.value) for tag in Identify])
