@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:11.5-alpine
+    environment:
+      - "POSTGRES_PASSWORD=${PASSWORD}"
+      - "POSTGRES_USER=${DB_USER}"
+      - "POSTGRES_DB=${DB_NAME}"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  api:
+    image:  softerrific/opt_out_api:0.1.9
+    env_file:
+      - .env
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  website:
+    image: softerrific/opt_out_website:0.1.0
+    ports:
+      - "8002:80"
+    depends_on:
+      - api
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+
+volumes:
+  db-data:
