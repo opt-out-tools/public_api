@@ -3,15 +3,14 @@ from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from django.db import models
 from django.forms.models import ModelForm
-
-from src.opt_out.public_api.api.enums import Identify
+from opt_out.public_api.api.enums import InteractionType, ReactionType, PerpetratorType
 
 
 class Submission(models.Model):
-    submission_id = models.AutoField(primary_key=True)
     urls = ArrayField(models.CharField(max_length=256))
     self_submission = models.BooleanField()
     is_part_of_larger_attack = models.BooleanField()
+
 
 class SubmissionForm(ModelForm):
     class Meta:
@@ -49,13 +48,24 @@ class SubmissionForm(ModelForm):
 
         return clean_is_part_of_larger_attack
 
-class FurtherDetails(models.Model):
-    identify = models.CharField(max_length=40, choices=[(tag.value, tag) for tag in Identify])
 
-class FurtherDetailsForm(ModelForm):
+class SubmissionDetails(models.Model):
+    identify = models.CharField(max_length=100)
+    age = models.PositiveSmallIntegerField()
+    job = models.CharField(max_length=160)
+    perpetrator = models.CharField(max_length=40, choices=[(tag.value, tag) for tag in PerpetratorType])
+    interaction = models.CharField(max_length=40, choices=[(tag.value, tag) for tag in InteractionType])
+    reaction_type = models.CharField(max_length=40, choices=[(tag.value, tag) for tag in ReactionType])
+    experienced = ArrayField(models.CharField(max_length=300))
+    feeling = models.CharField(max_length=300)
+
+    submission = models.ForeignKey(Submission, on_delete=models.PROTECT)
+
+
+class SubmissionDetailsForm(ModelForm):
     class Meta:
-        model = FurtherDetails
-        fields = ["identify"]
+        model = SubmissionDetails
+        fields = '__all__'
 
     def clean_identify(self):
         clean_identify = self.cleaned_data["identify"]
@@ -67,3 +77,13 @@ class FurtherDetailsForm(ModelForm):
             raise ValidationError("identify cannot be empty")
 
         return clean_identify
+
+
+class Predictions(models.Model):
+    texts = ArrayField(models.CharField(max_length=400))
+
+
+class PredictionForm(ModelForm):
+    class Meta:
+        model = Predictions
+        fields = '__all__'

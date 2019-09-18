@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  db:
+    env_file:
+      - .env
+    image: postgres:11.5-alpine
+    environment:
+      - "POSTGRES_PASSWORD=${PASSWORD}"
+      - "POSTGRES_USER=${DB_USER}"
+      - "POSTGRES_DB=${DB_NAME}"
+    ports:
+      - "5432:5432"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
