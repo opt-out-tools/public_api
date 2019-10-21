@@ -17,6 +17,7 @@ python-decouple = "^3.1"
 keras = "^2.2"
 tensorflow = "^1.14"
 pandas = "^0.25.0"
+requests = "^2.22"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.4"
