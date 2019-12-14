@@ -72,8 +72,12 @@ DB_USER=db_user
 PASSWORD=data_base_password
 SECRET_KEY=super_secret_password
 DEBUG=TRUE
-DB_HOST=database_host
+DB_HOST=localhost
 TF_XLA_FLAGS=--tf_xla_cpu_global_jit
+```
+After that you can run postgresql using command
+```
+docker-compose up -f docker-compose-db.yaml
 ```
 
 Note

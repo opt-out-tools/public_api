@@ -48,9 +48,6 @@ MANIFEST
 # Per-project virtualenvs
 .venv*/
 
-# Settings
-src/opt_out/public_api/website/settings.py
-
 # Misc
 local/
 install/

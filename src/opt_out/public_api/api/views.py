@@ -47,8 +47,6 @@ def predict(request: HttpRequest) -> JsonResponse:
 
     predictor = TextSentimentPrediction()
     predictions = predictor(form['texts'].data)
-    predictions = predictions >= .5
-    predictions = predictions.flatten().tolist()
     return JsonResponse({
         'predictions': predictions
     })
